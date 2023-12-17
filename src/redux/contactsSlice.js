@@ -55,7 +55,7 @@ const contactsSlice = createSlice({
       })
       .addCase(addContact.fulfilled, (state, action) => {
         const newContact = action.payload;
-        // Check if the name already exists before adding
+        
         if (!state.items.some((contact) => contact.name.toLowerCase() === newContact.name.toLowerCase())) {
           state.items.push(newContact);
         }
