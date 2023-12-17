@@ -49,8 +49,21 @@ const contactsSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
       })
+      .addCase(addContact.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(addContact.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        const newContact = action.payload;
+        // Check if the name already exists before adding
+        if (!state.items.some((contact) => contact.name.toLowerCase() === newContact.name.toLowerCase())) {
+          state.items.push(newContact);
+        }
+        state.isLoading = false;
+      })
+      .addCase(addContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.items = state.items.filter((contact) => contact.id !== action.payload);
